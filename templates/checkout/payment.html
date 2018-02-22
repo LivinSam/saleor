@@ -1,0 +1,37 @@
+{% extends "checkout/details.html" %}
+{% load i18n %}
+{% load bootstrap_form from bootstrap4 %}
+
+{% block hhdd %}
+<div class="main-wrapper">
+  <!-- banner-area start -->
+      <div style ="" class="banner-area bg-img-9 ptb-140 black-opacity">
+        <div class="arrow-btn">
+          <a href="#portfolio" id="scroll">
+            <span class="icon nz-arrow9"></span>
+          </a>
+        </div>
+        <div class="container">
+         
+            <div class="col-xs-12">
+              <div class="banner-wrap text-center">
+                <h2 style="">Purchase Items Easily</h2>
+                
+              </div>
+            </div>
+         
+        </div>
+      </div>
+</div>
+{% endblock hhdd %}
+{% block forms %}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <h1>{% trans "Payment" context "Checkout payment title" %}</h1>
+    {% bootstrap_form payment_form %}
+    {% bootstrap_form billing_address_form %}
+    <button type="submit" class="btn primary">
+      {% trans "Place order" context "Checkout payment primary action" %}
+    </button>
+  </form>
+{% endblock forms %}

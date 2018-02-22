@@ -1,0 +1,48 @@
+{% extends "order/payment/details.html" %}
+{% load bootstrap_form from bootstrap4 %}
+{% load i18n %}
+
+
+
+
+{% block hhdd %}
+
+<div class="main-wrapper">
+  <!-- banner-area start -->
+      <div style ="" class="banner-area bg-img-9 ptb-140 black-opacity">
+        <div class="arrow-btn">
+          <a href="#portfolio" id="scroll">
+            <span class="icon nz-arrow9"></span>
+          </a>
+        </div>
+        <div class="container">
+         
+            <div class="col-xs-12">
+              <div class="banner-wrap text-center">
+                <h2 style="">Purchase Items Easily</h2>
+                
+              </div>
+            </div>
+         
+        </div>
+      </div>
+</div>
+
+
+{% endblock hhdd %}
+
+{% block forms %}
+  <form id="payment-form" method="{{ form.method }}"{% if form.action %} action="{{ form.action }}"{% endif %} novalidate>
+    {% csrf_token %}
+    {{ form.media }}
+    {% bootstrap_form form %}
+    <div class="form-group">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-10">
+        <button type="submit" class="btn primary">
+          {% trans "Save changes" context "Payment form primary action" %}
+        </button>
+      </div>
+    </div>
+  </form>
+{% endblock forms %}

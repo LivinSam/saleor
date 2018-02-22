@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load bootstrap_pagination from bootstrap4 %}
+{% load i18n %}
+{% load shop %}
+{% load staticfiles %}
+{% load prices_i18n %}
+{% load build_absolute_uri from urls %}
+
+{% block title %}{% trans "Search results" context "Search page title" %} {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  {% for breadcrumb in breadcrumbs %}
+    <li{% if forloop.last %} class="active"{% endif %}>
+      {% if not forloop.last %}
+        <a href="{{ breadcrumb.get_absolute_url }}">{{ breadcrumb }}</a>
+      {% else %}
+        <span>{{ breadcrumb }}</span>
+      {% endif %}
+    </li>
+  {% endfor %}
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="main-wrapper">
+  <!-- banner-area start -->
+      <div class="banner-area bg-img-9 ptb-140 black-opacity">
+        <div class="arrow-btn">
+          <a href="#portfolio" id="scroll">
+            <span class="icon nz-arrow9"></span>
+          </a>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="banner-wrap text-center">
+                <h2>Purchase Items Easily</h2>
+                <h3>Flexible Shop</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- banner-area end -->
+      <!-- breadcumb-area start -->
+      <div class="breadcumb-area ptb-20 bg-fff">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="breadcumb-wrap text-right">
+                <ul>
+                  <li><a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a></li>
+                  <li>Result</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- breadcumb-area end -->
+      
+    
+        
+              <div class="row home__featured">
+                <div class="col-12">
+                  {% if query and results %}
+                    <div class="row">
+                      {% include "category/_items.html" with products=results %}
+                    </div>
+                    {% bootstrap_pagination results url=query_string %}
+                  {% else %}
+                    <div class="row no-results">
+                      <div class="col-12">
+                        <h2>{% trans "Search:" %} <strong>{{ query }}</strong></h2>
+                        <svg data-src="{% static "images/no-results-bg.svg" %}" width="360" height="360"/>
+                        <p>{% trans "Sorry, no matches found for your request." context "Search without results text" %}</p>
+                        <p>{% trans "Try again or shop new arrivals." context "Search without results text" %}</p>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+         
+
+       <footer class="footer-area">
+        <div class="footer-top">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget">
+                  <h2>About Us</h2>
+                  <p>Dolor church-key veniam, fap Bushwick mumblecore irure Vice consectetur 3 wolf moon sapient e literally quinoa Vice consectetur 3 wolf moon literally quinoa. </p>
+                  <span><strong>Location:</strong> PO Box 157 Montreal, Canada,  North Avenue 12 -39 Bulding2</span>
+                  <span><strong>Phone:</strong>  +1 (88) 250 260</span>
+                  <span><strong>Skype:</strong>  ninziothemes</span>
+                  <span><strong>Email:</strong>  support@ninzio.com</span>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget time">
+                  <h3>Working Hours</h3>
+                  <ul>
+                    <li>Monday <span>09:00 - 18:00 </span></li>
+                    <li>Tuesday <span>09:00 - 18:00 </span></li>
+                    <li>Wednesday <span>09:00 - 18:00 </span></li>
+                    <li>Thursday <span>09:00 - 18:00 </span></li>
+                    <li>Friday <span>09:00 - 18:00 </span></li>
+                    <li>Saturday <span class="closed">Closed</span></li>
+                    <li>Sunday <span class="closed">Closed</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget instagram">
+                  <h2>Instagram Photos</h2>
+                  <ul>
+                    <li><a href="#"><img src="{% static "images/instagram/1.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/2.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/3.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/4.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/5.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/6.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/7.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/8.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/9.jpg" %}" alt="" /></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget contact">
+                  <h2>Contact US</h2>
+                  <form action="#">
+                    <input type="text" placeholder="NAME"/>
+                    <input type="email" placeholder="EMAIL"/>
+                    <textarea cols="30" rows="10" placeholder="MASSAGE"></textarea>
+                    <button>Send Message</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom-area">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="footer-bottom">
+                  <div class="row">
+                    <div class="col-md-5 col-xs-12">
+                      <p><img src="img/footer-img.png" alt="" />Copyright &copy; Ninzio Themes. Powered by HTML5 / CSS3</p>
+                    </div>
+                    <div class="col-md-7 col-xs-12">
+                      <div class="footer-menu text-right">
+                        <ul>
+                          <li><a href="#">HOME</a></li>
+                          <li><a href="#">BLOG</a></li>
+                          <li><a href="#">CONTACT US </a></li>
+                          <li><a href="#">FAQ</a></li>
+                          <li><a href="#">MY WISHLIST</a></li>
+                          <li><a href="#">ENGLISH</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+{% endblock content %}

@@ -1,0 +1,121 @@
+{% extends "checkout/details.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" context "Checkout login page title" %} — {{ block.super }}{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<div class="main-wrapper">
+<!-- banner-area start -->
+  <div style ="" class="banner-area bg-img-9 ptb-140 black-opacity">
+    <div class="arrow-btn">
+      <a href="#portfolio" id="scroll">
+        <span class="icon nz-arrow9"></span>
+      </a>
+    </div>
+    <div class="container">
+     
+        <div class="col-xs-12">
+          <div class="banner-wrap text-center">
+            <h2 style="">Purchase Items Easily</h2>
+            
+          </div>
+        </div>
+     
+    </div>
+  </div>
+
+  <div class="row checkout__login">
+    <div class="col-12 col-md-6">
+      <div class="checkout__login__continue">
+        <h3>{% trans "New customer?" context "Checkout login page title" %}</h3>
+        <img class="checkout-pirate" src="{% static 'images/login-bg.png' %}" srcset="{% static 'images/login-bg.png' %} 1x, {% static 'images/login-bg2x.png' %} 2x">
+        <p>
+          <a href="{% url 'checkout:index' %}" class="btn secondary narrow">
+            {% trans "Continue" context "Checkout login page new users action" %}
+          </a>
+        </p>
+        <small>{% trans "Registration is not required!" context "Checkout login page new users message" %}</small>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 checkout__login__form">
+      {% url "checkout:index" as checkout_url %}
+      <h3>{% trans "Existing customer? Log in." context "Checkout login form title" %}</h3>
+      {% include "account/partials/login_form.html" with REDIRECT_FIELD_VALUE=checkout_url %}
+    </div>
+  </div>
+
+
+
+  <footer style="" class="footer-area">
+        <div  style="padding: 30px 0">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-4 col-xs-12">
+                <div class="footer-widget">
+                  <h2>About Us</h2>
+                  <h4 style="color: white">Dolor church-key veniam, fap Bushwick mumblecore irure Vice consectetur 3 wolf moon sapient e literally quinoa Vice consectetur 3 wolf moon literally quinoa. </h4>
+                  <span style="font-size: 14px"><strong>Location:</strong> PO Box 157 Montreal, Canada,  North Avenue 12 -39 Bulding2</span>
+                  <span style="font-size: 14px"><strong>Phone:</strong>  +1 (88) 250 260</span><BR>
+
+                  <span style="font-size: 14px"><strong>Skype:</strong>  ninziothemes</span><br>
+                  <span style="font-size: 14px"><strong>Email:</strong>  support@ninzio.com</span>
+                </div>
+              </div>
+              
+              
+              <div class="col-md-4 col-xs-12">
+                <div class="footer-widget contact">
+                  <h2>Contact US</h2>
+                  <form action="#">
+                    <input style="height: 30px" type="text" placeholder="NAME"/>
+                    <input style="height: 30px" type="email" placeholder="EMAIL"/>
+                    <textarea style="height: 70px" cols="30" rows="10" placeholder="MASSAGE"></textarea>
+                    <button>Send Message</button>
+                  </form>
+                </div>
+              </div>
+              <div class="col-md-4 col-xs-12">
+                <div class="footer-widget">
+                  <h2 >Quick Links</h2>
+                  <ul>
+                    <li><a style="color: white;font-size: 14px" href="#">HOME</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">BLOG</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">CONTACT US </a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">FAQ</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">MY WISHLIST</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">ENGLISH</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom-area">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="footer-bottom">
+                  <div class="row">
+                    <div class="col-md-5 col-xs-12">
+                      <p><img src="img/footer-img.png" alt="" />Copyright &copy; Ninzio Themes. Powered by HTML5 / CSS3</p>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+</div>
+
+
+
+{% endblock %}

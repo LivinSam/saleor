@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% load staticfiles %}
+{% load render_bundle from webpack_loader %}  
+
+<html lang="{{ LANGUAGE_CODE }}" class="no-js" data-shipping-options-url="{% url 'cart:shipping-options' %}" data-cart-summary-url="{% url 'cart:cart-summary' %}">
+<head>
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+
+  <style>
+    @font-face {
+  font-family: 'ninzio';
+  src:url("{% static 'fonts/ninzio.eot' %}");
+  src:  url("{% static 'fonts/ninzio.eot?6i4ggs#iefix' %}") format('embedded-opentype'),
+    url("{% static '/fonts/ninzio.ttf?6i4ggs' %}") format('truetype'),
+    url("{% static 'fonts/ninzio.woff?6i4ggs' %") format('woff'),
+    url("{% static 'fonts/ninzio.svg?6i4ggs#ninzio' %") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ninzio';
+  src:  url("{% static 'fonts/ninzio-2.eot?bvk9qs' %}");
+  src:  url("{% static 'fonts/ninzio-2.eot?bvk9qs#iefix' %}") format('embedded-opentype'),
+    url("{% static 'fonts/ninzio-2.ttf?bvk9qs' %}") format('truetype'),
+    url("{% static 'fonts/ninzio-2.woff?bvk9qs' %}") format('woff'),
+    url("{% static 'fonts/ninzio-2.svg?bvk9qs#ninzio' %}") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+  </style>
+
+        <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+        <!--Favicon-->
+        <link rel="shortcut icon" href="{% static 'apple-touch-icon.png' %}" type="image/x-icon">
+        <link rel="icon" href="{% static 'images/fav.jpg' %}" type="image/x-icon">
+
+        <!-- Place favicon.ico in the root directory -->
+
+    <!-- all css here -->
+    <!-- bootstrap v3.3.7 css -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <!-- Custom css -->
+       <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}">
+    <!-- animate css -->
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <!--slicknav.min.css -->
+        <!--<link rel="stylesheet" href="css/slicknav.min.css">-->
+    <!-- owl.carousel.2.0.0-beta.2.4 css -->
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <!-- font-awesome v4.6.3 css -->
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <!-- magnific-popup.css -->
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <!-- slick.css -->
+        <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <!-- style css -->
+       <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <!-- Custom css -->
+        <link rel="stylesheet" href="{% static 'css/custom-font.css' %}">
+          
+        <!-- responsive css -->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+   
+
+
+  {% block meta %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta name="author" content="{% trans "Mirumee Software" context "Meta author text" %}">
+    <meta name="theme-color" content="#21915a">
+    <meta name="og:type" content="website">
+
+  {% endblock meta %}
+
+  {% include 'favicon.html' %}
+  {% render_bundle 'vendor' 'css' %}
+  {% render_bundle 'storefront' 'css' %}
+
+
+  {% block meta_tags %}
+    <meta property="og:title" content="{{ site.name }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static "images/block1.png" %}">
+  {% endblock meta_tags %}
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<style>
+.bg-img-1{background:url({% static 'images/bg/1.jpg' %})no-repeat center center / cover}
+.bg-img-2{background:url({% static 'images/bg/2.jpg' %})no-repeat center center / cover}
+.bg-img-3{background:url({% static 'images/bg/3.jpg' %})no-repeat center center / cover}
+.bg-img-4{background:url({% static 'images/bg/4.jpg' %})no-repeat center center / cover}
+.bg-img-5{background:url({% static 'images/bg/5.jpg' %})no-repeat center center / cover}
+.bg-img-6{background:url({% static 'images/bg/6.jpg' %})no-repeat center center / cover}
+.bg-img-7{background:url({% static 'images/bg/7.jpg' %})no-repeat center center / cover}
+.bg-img-8{background:url({% static 'images/bg/10.jpg' %})no-repeat center center / cover}
+.bg-img-9{background:url({% static 'images/bg/11.jpg' %})no-repeat center center / cover}
+.bg-img-10{background:url({% static 'images/bg/12.jpg' %})no-repeat center center / cover}
+
+.footer-area{
+  background:url({% static 'images/bg/footer.jpg' %})no-repeat center center / cover
+}
+
+
+</style>
+
+
+<body>
+{% block header %}
+
+     <div class="col-2 col-md-4">
+       <div class="navbar__brand__cart float-right">
+          <div class="cart-wrapper hidden-sm hidden-xs" style="position: fixed">
+              <a href="{% url "cart:index" %}">
+                <span class="icon nz-shop1"></span>
+                 <span class="{% if not cart_counter %}empty{% endif %}">
+                  {% if cart_counter %}
+                    {{ cart_counter }}
+                  {% else %}
+                    0
+                  {% endif %}
+                </span>
+              </a>
+               <div class="cart-dropdown d-none">
+                  {% include 'cart_dropdown.html' %}
+               </div>
+            </div>
+          </div>
+      </div>
+
+   
+<div class="sidebar-menu hidden-sm hidden-xs">
+      <div class="sidebar-menu-btn hidden-lg">
+        <a href="javascript:void(0);">
+          <span class="first"></span>
+          <span class="secont"></span>
+          <span class="third"></span>
+        </a>
+      </div>
+      <div class="logo-wrap">
+        <a href="{% url 'home' %}">
+          <img src="{% static "images/logo.png" %}">
+        </a>
+      </div>
+      <ul class="menu">
+        <li><a href="{% url 'home' %}">Home  </a>
+        </li>
+        <li><a href="#">Products  </a>
+          
+          <ul class="submenu">
+            {% for category in categories %}
+            <li class="submenu"><a href="{{ category.get_absolute_url }}">{{ category }}<span class="pull-right">+</span></a>
+              <ul class="submenu">
+                <li><a href="about.html">About us #1</a></li>
+                <li><a href="about2.html">About us #2</a></li>
+              </ul>
+            </li>           
+            {% endfor %}
+          </ul>
+       </li>
+      
+        <li><a href="#">Blog  </a>
+          <ul class="submenu">
+            <li><a href="blog-grid.html">Blog grid </a></li>
+            <li><a href="blog-list.html">Blog list</a></li>
+            <li><a href="blog-standard.html">Blog standard </a></li>
+            <li><a href="blog-details.html">Single post </a></li>
+          </ul>
+        </li>
+        <li><a href="#">Shop  </a>
+          <ul class="submenu">
+            <li><a href="shop.html">Shop grid </a></li>
+            <li><a href="shop-single.html">Product #1</a></li>
+            <li><a href="shop-single2.html">Product #2</a></li>
+          </ul>
+        </li>
+       
+      </ul>
+     {% if SEARCH_IS_ENABLED %}
+      <form action="{% url "search:search" %}">
+        <input type="text" name="q" value="{% if query %}{{ query }}{% endif %}" placeholder="Search ..."/>
+        <button class="nz-search1" type="submit"></button>
+      </form>
+      {% endif %}
+
+    <ul class="nav navbar">
+     {% if user.is_authenticated %}
+              {% if user.is_staff or request.impersonator.is_staff %}
+              
+                <li>
+                  <a href="{% url "dashboard:index" %}" target="_blank" rel="noopener">
+                    {% trans "DASHBOARD" context "Main navigation item" %}
+                  </a>
+                </li>
+              {% endif %}
+              <li>
+                <a href="{% url "profile:details" %}">
+                  {% trans "YOUR ACCOUNT" context "Main navigation item" %}</a>
+              </li>
+              {% if user.is_impersonate %}
+                <li>
+                  <a href="{% url "impersonate-stop" %}">
+                    {% trans 'Stop impersonating' context 'Main navigation item' %}
+                  </a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="{% url "account_logout" %}">
+                    {% trans "LOGOUT" context "Main navigation item" %}</a>
+                </li>
+              {% endif %}
+            {% else %}
+              <li>
+                <a rel="nofollow" href="{% url "account_signup" %}">
+                  {% trans "REGISTER" context "Main navigation item" %}</a>
+              </li>
+              <li>
+                <a rel="nofollow" href="{% url "account_login" %}">
+                  {% trans "LOGIN" context "Main navigation item" %}
+                </a>
+              </li>
+            
+            {% endif %}
+    </ul>
+ 
+      <ul class="socil-icon">
+        <li><a href="#"><i class="nz-facebook"></i></a></li>
+        <li><a href="#"><i class="nz-twitter"></i></a></li>
+        <li><a href="#"><i class="nz-google-plus"></i></a></li>
+        <li><a href="#"><i class="nz-instagram"></i></a></li>
+        <li><a href="#"><i class="nz-skype"></i></a></li>
+      </ul>
+    </div>
+  </div>          
+ 
+{% endblock %}
+
+
+  {% block breadcrumb %}
+  {% endblock breadcrumb %}
+  {% block content %}
+  {% endblock content %}
+
+
+
+
+
+
+{% block footer_scripts %}
+
+
+      <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+  <!-- jquery latest version -->
+        <script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <!-- bootstrap js -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- owl.carousel.2.0.0-beta.2.4 css -->
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <!-- meanmenu js -->
+        <script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+    <!-- wow js -->
+        <script src="{% static 'js/wow.min.js' %}"></script>
+    <!-- mixitup.min.js -->
+        <script src="{% static 'js/mixitup.min.js' %}"></script>
+    <!-- jquery.waypoints.min.js -->
+        <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <!-- jquery.waypoints.min.js -->
+        <script src="{% static 'js/counterup.main.js' %}"></script>
+    <!-- slick.min.js -->
+        <script src="{% static 'js/slick.min.js' %}"></script>
+    <!-- jquery.countdown.min.js -->
+        <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+    <!-- jquery.magnific-popup.min.js -->
+        <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+
+        <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <!-- plugins js -->
+        <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- main js -->
+        <script src="{% static 'js/main.js' %}"></script>
+        <!-- main js -->
+        <script src="{% static 'js/script.js' %}"></script>
+
+         <!-- modernizr css -->
+        <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script> 
+
+
+
+        <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+
+        <script src="{% static 'js/jquery.fancybox-media.js' %}"></script>
+        
+        <!-- plugins js -->
+        <script src="{% static 'js/owwll.js' %}"></script>
+   
+
+
+
+         {% render_bundle 'vendor' 'js' %}
+         {% render_bundle 'storefront' 'js' %}
+   
+{% endblock footer_scripts %}
+</body>
+</html>

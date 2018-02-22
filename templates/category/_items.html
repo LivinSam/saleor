@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load price_range from price_ranges %}
+{% load product_first_image from product_images %}
+{% load get_thumbnail from product_images %}
+
+
+{% for product, availability in products %}
+      
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="shop-wrap">
+                <div class="shop-img">
+                  <img class="img-responsive"
+                     src="{% product_first_image product method="crop" size="378x340" %}"
+                     srcset="{% product_first_image product method="crop" size="378x340" %} 1x, {% product_first_image product method="crop" size="510x510" %} 2x"
+                     alt="">
+                 </div>
+                <div class="shop-content text-center">
+                   {% if availability.available %}                                      
+                  <h3><span> {% price_range availability.price_range %}</h3>
+                  <h4><a href="{{ product.get_absolute_url }}">{{ product }}</a></h4>
+                                    
+                  {% else %}
+                    &nbsp;
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+       
+{% endfor %}

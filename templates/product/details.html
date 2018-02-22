@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% load bootstrap_field from bootstrap4 %}
+{% load i18n %} 
+{% load gross from prices_i18n %}
+{% load markdown from markdown %}
+{% load price_range from price_ranges %}
+{% load staticfiles %}
+{% load get_thumbnail product_first_image from product_images %}
+{% load build_absolute_uri from urls %}
+{% load shop %}
+
+
+
+{% block title %}{{ product }} — {{ block.super }}{% endblock %}
+
+{% block meta_description %}{{ product.description }}{% endblock %}
+
+{% block meta_tags %}
+  <meta property="og:title" content="{{ product }}">
+  <meta property="og:description" content="{{ product.description }}">
+
+  {% build_absolute_uri request=request location=product.get_absolute_url as product_url %}
+  <meta property="og:url" content="{{ product_url }}">
+  <link rel="canonical" href="{{ product_url }}">
+
+  {% product_first_image product size="510x510" as product_image %}
+  {% if product_image %}
+    <meta property="og:image" content="{{ product_image }}" />
+    <meta property="og:image:width" content="510">
+    <meta property="og:image:height" content="510">
+  {% else %}
+    <meta property="og:image" content="{% static "images/block1.png" %}">
+  {% endif %}
+{% endblock meta_tags %}
+
+
+
+{% block content %}
+<div class="main-wrapper">
+  <!-- banner-area start -->
+      <div class="banner-area bg-img-9 ptb-140 black-opacity">
+        <div class="arrow-btn">
+          <a href="#portfolio" id="scroll">
+            <span class="icon nz-arrow9"></span>
+          </a>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="banner-wrap text-center">
+                <h2>Purchase Items Easily</h2>
+                <h3>Flexible Shop</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- banner-area end -->
+      <!-- breadcumb-area start -->
+      <div class="breadcumb-area ptb-20 bg-fff">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+                              
+              <div class="breadcumb-wrap text-right">              
+                    <ul class="breadcumb-wrap text-right">
+                      <li>
+                        <a href="{% url 'home' %}">
+                          {% trans "Home" context "Main navigation item" %}
+                        </a>
+                      </li>
+                      {% if product.category %}
+                        <li>
+                          <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+                        </li>
+                      {% endif %}
+                      <li>
+                        <a href="{{ product.get_absolute_url }}">{{ product }}</a>
+                      </li>
+                    </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- breadcumb-area end -->
+      
+  
+{% if not is_visible %}
+    <div class="alert alert-warning" role="alert">
+      {% blocktrans trimmed with date=product.available_on|date context "Product details text" %}
+        <strong>Warning!</strong>
+        You are previewing a product that will become visible on <strong>{{ date }}</strong>.
+      {% endblocktrans %}
+    </div>
+  {% endif %}
+  <!--Shop Single-->
+            <div class="shop-single-section">
+              <div class="container">
+                   
+                    <div class="shop-page product-details">
+                    
+                        <!--Basic Details-->
+                         <script type="application/ld+json">{{ json_ld_product_data|safe }}</script>
+                       <div class="basic-details clearfix">
+                            
+                           <div class="basic-details clearfix">
+                             {% with images=product_images %}
+                              {% if images %}
+                             <div class="image-column col-md-6 col-sm-6 col-xs-12">
+                                <div id="carousel-example-generic" class="carousel slide">
+                                  <div class="carousel-inner" role="listbox">
+                                      {% for image in images %}
+                                        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                                          <img class="d-block img-fluid"
+                                               src="{% get_thumbnail image.image method="crop" size="540x540" %}"
+                                               srcset="{% get_thumbnail image.image method="crop" size="540x540" %} 1x, {% get_thumbnail image.image method="crop" size="1080x1080" %} 2x" alt="">
+                                        </div>
+                                      {% endfor %}
+                                  </div>
+                                     {% if images|length > 1 %}
+                                        <a class="carousel-control-prev" href="#carousel-example-generic" role="button" data-slide="prev">
+                                          <svg data-src="{% static "images/gallery-arrow.svg" %}" />
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel-example-generic" role="button" data-slide="next">
+                                          <svg data-src="{% static "images/gallery-arrow.svg" %}" />
+                                        </a>
+                                      {% endif %}
+                                      <ol>
+                                        {% for image in images %}
+                                          {% if images|length > 1 %}
+                                            <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}"{% if forloop.first %} class="active"{% endif %}>
+                                              <img src="{% get_thumbnail image.image method="crop" size="60x60" %}"
+                                                   srcset="{% get_thumbnail image.image method="crop" size="60x60" %} 1x, {% get_thumbnail image.image method="crop" size="120x120" %} 2x"
+                                                   alt="">
+                                            </li>
+                                          {% endif %}
+                                        {% endfor %}
+                                      </ol>
+                                             
+                                 </div>   
+                              {% endif %}
+                            {% endwith %}
+
+                                
+                            </div>
+                                
+                            <!--Info Column-->
+                            <div class="info-column col-md-6 col-sm-6 col-xs-12">
+                                <a href="#" class="share-icon nz-sharing"></a>
+                                <div class="details-header">
+                                    <h4>{{ product }}</h4>
+                                  {% if user.is_staff %}
+                                    <p>
+                                      <a href="{% url "dashboard:product-detail" pk=product.pk %}">
+                                        {% trans "Edit in dashboard" context "Product details link text" %}
+                                      </a>
+                                    </p>
+                                  {% endif %} 
+                                </div>
+                                {% if availability.available %}
+                                {% if show_variant_picker %}
+                                  <div id="variant-price-component"></div>
+                                {% else %}
+                                  <h2 class="product__info__price">
+                                    <span>{% price_range availability.price_range %}</span>
+                                    {% if availability.discount %}
+                                      <small class="product__info__price__undiscounted">{% gross availability.price_range_undiscounted.min_price html=True %}</small>
+                                    {% endif %}
+                                    {% if availability.price_range_local_currency %}
+                                      <br>
+                                      <small class="text-info">
+                                        &asymp;
+                                        {% gross availability.price_range_local_currency.min_price html=True %}
+                                      </small>
+                                    {% endif %}
+                                  </h2>
+                                {% endif %}
+                              {% endif %}
+                                <div class="text">
+                                    <p>{{ product.description|safe }} </p>
+                                </div>
+
+                                <div class="other-options">
+                                
+                                    <!--Select Items-->
+                                 
+                                    
+                                     <!--Btns Box-->
+                                    
+                                    {% if is_visible and product.is_in_stock %}
+                                      {% block orderform %}
+                                        {% if show_variant_picker %}
+                                          {% csrf_token %}
+                                          <div id="variant-picker" data-variant-picker-data="{{ variant_picker_data }}" data-action="{% url 'product:add-to-cart' product_id=product.pk slug=product.get_slug %}"></div>
+                                        {% else %}
+                                          <form id="product-form" role="form" class="product-form clearfix" method="post" action="{% url 'product:add-to-cart' product_id=product.pk slug=product.get_slug %}" novalidate>
+                                            {% csrf_token %}
+                                            {% bootstrap_field form.variant %}
+                                            <div class="product__info__quantity">
+                                              {% bootstrap_field form.quantity %}
+                                            </div>
+
+                                            <div class="btns-box">
+                                              <button type="button" class="theme-btn add-to-cart">
+                                                <span class="icon nz-shop1"></span>{% trans "Add to cart" context "Product details primary action" %}
+                                              </button>
+                                            </div>
+                                          </form>                         
+                                        {% endif %}
+                                      {% endblock %}
+                                      <div class="product__info__form-error">
+                                        <small class="text-danger"></small>
+                                      </div>
+
+                                    {% else %}
+                                      <p class="alert alert-warning">
+                                        {% blocktrans context "Product details text" %}This product is currently <strong>unavailable</strong>.{% endblocktrans %}
+                                      </p>
+                                    {% endif %}
+                                                                    
+                                    <div class="tags">Category: <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!--Basic Details-->
+                        
+                        <!--Product Info Tabs-->
+                        <div class="product-info-tabs">
+                            <!--Product Tabs-->
+                            <div class="prod-tabs tabs-box">
+                            
+                                <!--Tab Btns-->
+                                <ul class="tab-btns tab-buttons clearfix">
+                                    <li data-tab="#prod-details" class="tab-btn active-btn"><span class="icon nz-shop1"></span>Description</li>
+                                    <li data-tab="#prod-reviews" class="tab-btn"><span class="icon nz-infoinfo"></span>Additional Information</li>
+                                    
+                                </ul>
+                                
+                                <!--Tabs Container-->
+                                <div class="tabs-content">
+                                    
+                                    <!--Tab / Active Tab-->
+                                    <div class="tab active-tab" id="prod-details">
+                                        <div class="content">
+                                            <p>{{ product.description|safe }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--Tab-->
+                                    <div class="tab" id="prod-reviews">
+                                        <div class="content">
+                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.Lorem ipsum dolor sit amet, consectetuer adipiscing elit doli. Aenean commodo ligula eget dolor. Aenean massa. Cumtipsu sociis natoque penatibus et magnis dis parturient montesti, nascetur ridiculus mus.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--Tab / Active Tab-->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Product Info Tabs-->
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!--End Shop Single-->
+
+      <footer class="footer-area">
+        <div class="footer-top">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget">
+                  <h2>About Us</h2>
+                  <p>Dolor church-key veniam, fap Bushwick mumblecore irure Vice consectetur 3 wolf moon sapient e literally quinoa Vice consectetur 3 wolf moon literally quinoa. </p>
+                  <span><strong>Location:</strong> PO Box 157 Montreal, Canada,  North Avenue 12 -39 Bulding2</span>
+                  <span><strong>Phone:</strong>  +1 (88) 250 260</span>
+                  <span><strong>Skype:</strong>  ninziothemes</span>
+                  <span><strong>Email:</strong>  support@ninzio.com</span>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget time">
+                  <h3>Working Hours</h3>
+                  <ul>
+                    <li>Monday <span>09:00 - 18:00 </span></li>
+                    <li>Tuesday <span>09:00 - 18:00 </span></li>
+                    <li>Wednesday <span>09:00 - 18:00 </span></li>
+                    <li>Thursday <span>09:00 - 18:00 </span></li>
+                    <li>Friday <span>09:00 - 18:00 </span></li>
+                    <li>Saturday <span class="closed">Closed</span></li>
+                    <li>Sunday <span class="closed">Closed</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget instagram">
+                  <h2>Instagram Photos</h2>
+                  <ul>
+                    <li><a href="#"><img src="{% static "images/instagram/1.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/2.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/3.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/4.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/5.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/6.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/7.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/8.jpg" %}" alt="" /></a></li>
+                    <li><a href="#"><img src="{% static "images/instagram/9.jpg" %}" alt="" /></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="footer-widget contact">
+                  <h2>Contact US</h2>
+                  <form action="#">
+                    <input type="text" placeholder="NAME"/>
+                    <input type="email" placeholder="EMAIL"/>
+                    <textarea cols="30" rows="10" placeholder="MASSAGE"></textarea>
+                    <button>Send Message</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom-area">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="footer-bottom">
+                  <div class="row">
+                    <div class="col-md-5 col-xs-12">
+                      <p><img src="img/footer-img.png" alt="" />Copyright &copy; Ninzio Themes. Powered by HTML5 / CSS3</p>
+                    </div>
+                    <div class="col-md-7 col-xs-12">
+                      <div class="footer-menu text-right">
+                        <ul>
+                          <li><a href="#">HOME</a></li>
+                          <li><a href="#">BLOG</a></li>
+                          <li><a href="#">CONTACT US </a></li>
+                          <li><a href="#">FAQ</a></li>
+                          <li><a href="#">MY WISHLIST</a></li>
+                          <li><a href="#">ENGLISH</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+{% endblock content %}
+

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load gross net tax from prices_i18n %}
+
+{% block title %}{% trans "Checkout" context "Checkout page title" %} — {{ block.super }}{% endblock %}
+
+
+
+{% block content %}
+
+
+ {% block hhdd %} {% endblock hhdd %}
+<div class=" main-wrapper">
+  <div class="container" style="margin-top: 50px">
+    <div class=" row checkout">
+      <div class="col-md-7">
+        {% block forms %}{% endblock %}
+      </div>
+      <div class="col-md-5">
+        {% with total=checkout.get_total %}
+          <div class="checkout__review">
+            <h3 class="checkout__review__tittle">{% trans "Order review" context "Order review title" %}</h3>
+            {% for shipment, shipment_cost, total_with_shipment in checkout.deliveries %}
+              {% for item, item_price_per_item, item_price_total in shipment %}
+                <div class="row">
+                  <div class="col-8">
+                    <p><strong>{{ item.variant.product }}</strong> x {{ item.quantity }}<br>
+                      <span class="checkout__review__variant">{{ item.variant }}</span></p>
+                  </div>
+                  <div class="col-4">
+                    <p class="float-right">{% net item_price_total %}</p>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endfor %}
+            <div class="row checkout__review__section">
+              <div class="col-8">
+                <p>{% trans "Shipment" context "Order review section" %}</p>
+              </div>
+              <div class="col-4">
+                <p class="float-right">{% if checkout.shipping_method %}
+                  {% net checkout.shipping_method.get_total %}
+                {% else %}
+                  &mdash;
+                {% endif %}</p>
+              </div>
+            </div>
+            <div class="row checkout__review__section">
+              <div class="col-12">
+                <h3>{% trans "Promo code" context "Order review section title" %}</h3>
+                {% include "checkout/snippets/voucher_form.html" with discount=checkout.discount form=voucher_form %}
+              </div>
+            </div>
+            <div class="row checkout__review__section">
+              <div class="col-8">
+                <h3>{% trans "Total" context "Order review section title" %}</h3>
+              </div>
+              <div class="col-4">
+                <h3 class="float-right">{% gross total html=True %}</h3>
+              </div>
+            </div>
+          </div>
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+   
+  <footer style="" class="footer-area">
+        <div  style="padding: 30px 0">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-4 col-xs-12">
+                <div class="footer-widget">
+                  <h2>About Us</h2>
+                  <h4 style="color: white">Dolor church-key veniam, fap Bushwick mumblecore irure Vice consectetur 3 wolf moon sapient e literally quinoa Vice consectetur 3 wolf moon literally quinoa. </h4>
+                  <span style="font-size: 14px"><strong>Location:</strong> PO Box 157 Montreal, Canada,  North Avenue 12 -39 Bulding2</span>
+                  <span style="font-size: 14px"><strong>Phone:</strong>  +1 (88) 250 260</span><BR>
+
+                  <span style="font-size: 14px"><strong>Skype:</strong>  ninziothemes</span><br>
+                  <span style="font-size: 14px"><strong>Email:</strong>  support@ninzio.com</span>
+                </div>
+              </div>
+              
+              
+              <div class="col-md-4 col-xs-12">
+                <div class="footer-widget contact">
+                  <h2>Contact US</h2>
+                  <form action="#">
+                    <input style="height: 30px" type="text" placeholder="NAME"/>
+                    <input style="height: 30px" type="email" placeholder="EMAIL"/>
+                    <textarea style="height: 70px" cols="30" rows="10" placeholder="MASSAGE"></textarea>
+                    <button>Send Message</button>
+                  </form>
+                </div>
+              </div>
+              <div class="col-md-4 col-xs-12">
+                <div class="footer-widget">
+                  <h2 >Quick Links</h2>
+                  <ul>
+                    <li><a style="color: white;font-size: 14px" href="#">HOME</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">BLOG</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">CONTACT US </a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">FAQ</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">MY WISHLIST</a></li>
+                    <li><a style="color: white;font-size: 14px" href="#">ENGLISH</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom-area">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="footer-bottom">
+                  <div class="row">
+                    <div class="col-md-5 col-xs-12">
+                      <p><img src="img/footer-img.png" alt="" />Copyright &copy; Ninzio Themes. Powered by HTML5 / CSS3</p>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+</div>
+
+
+{% endblock content %}
+
