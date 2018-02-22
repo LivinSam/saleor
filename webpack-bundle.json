@@ -1,0 +1,22 @@
+{"status":"done","publicPath":"/static/assets/",
+	"chunks":
+	{"storefront":[{"name":"storefront.js","publicPath":"/static/assets/storefront.js",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\storefront.js"},
+
+	{"name":"storefront.css","publicPath":"/static/assets/storefront.css",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\storefront.css"}],
+
+	"dashboard":[{"name":"dashboard.js","publicPath":"/static/assets/dashboard.js",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\dashboard.js"},
+	{"name":"dashboard.css","publicPath":"/static/assets/dashboard.css",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\dashboard.css"}],
+	"document":[{"name":"document.js","publicPath":"/static/assets/document.js",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\document.js"},
+	{"name":"document.css","publicPath":"/static/assets/document.css",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\document.css"}],
+
+	"vendor":[{"name":"vendor.js","publicPath":"/static/assets/vendor.js",
+	"path":"C:\\Users\\hp\\sal\\saleor\\saleor\\static\\assets\\vendor.js"}]
+
+}
+}
